@@ -38,7 +38,7 @@ public class DayFive extends AdventOfCode
 
         while (index < polymer.size()-1)
         {
-            if (doCharactersReact(polymer.get(index), polymer.get(index+1)))
+            if (doUnitsReact(polymer.get(index), polymer.get(index+1)))
             {
                 polymer.remove(index);
                 polymer.remove(index);
@@ -53,7 +53,7 @@ public class DayFive extends AdventOfCode
         return polymer;
     }
 
-    private boolean doCharactersReact(char first, char second)
+    private boolean doUnitsReact(char first, char second)
     {
         boolean sameChar = Character.toLowerCase(first) == Character.toLowerCase(second);
         boolean oppositeCase =
