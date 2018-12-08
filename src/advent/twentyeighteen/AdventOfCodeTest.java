@@ -51,22 +51,22 @@ class AdventOfCodeTest
 
     private static final String dayFourInputText =
             "[1518-11-01 00:00] Guard #10 begins shift," +
-                    "[1518-11-01 00:05] falls asleep," +
-                    "[1518-11-01 00:25] wakes up," +
-                    "[1518-11-01 00:30] falls asleep," +
-                    "[1518-11-01 00:55] wakes up," +
-                    "[1518-11-01 23:58] Guard #99 begins shift," +
-                    "[1518-11-02 00:40] falls asleep," +
-                    "[1518-11-02 00:50] wakes up," +
-                    "[1518-11-03 00:05] Guard #10 begins shift," +
-                    "[1518-11-03 00:24] falls asleep," +
-                    "[1518-11-03 00:29] wakes up," +
-                    "[1518-11-04 00:02] Guard #99 begins shift," +
-                    "[1518-11-04 00:36] falls asleep," +
-                    "[1518-11-04 00:46] wakes up," +
-                    "[1518-11-05 00:03] Guard #99 begins shift," +
-                    "[1518-11-05 00:45] falls asleep," +
-                    "[1518-11-05 00:55] wakes up";
+            "[1518-11-01 00:05] falls asleep," +
+            "[1518-11-01 00:25] wakes up," +
+            "[1518-11-01 00:30] falls asleep," +
+            "[1518-11-01 00:55] wakes up," +
+            "[1518-11-01 23:58] Guard #99 begins shift," +
+            "[1518-11-02 00:40] falls asleep," +
+            "[1518-11-02 00:50] wakes up," +
+            "[1518-11-03 00:05] Guard #10 begins shift," +
+            "[1518-11-03 00:24] falls asleep," +
+            "[1518-11-03 00:29] wakes up," +
+            "[1518-11-04 00:02] Guard #99 begins shift," +
+            "[1518-11-04 00:36] falls asleep," +
+            "[1518-11-04 00:46] wakes up," +
+            "[1518-11-05 00:03] Guard #99 begins shift," +
+            "[1518-11-05 00:45] falls asleep," +
+            "[1518-11-05 00:55] wakes up";
 
     @Test
     void testDayFourPartOneExamples() throws Exception
@@ -95,4 +95,50 @@ class AdventOfCodeTest
     {
         assertEquals(4, new DayFive("dabAcCaCBAcCcaDA", ",").partTwo());
     }
+
+    @Test
+    void testDaySixPartOneExamples()
+    {
+        assertEquals(17, new DaySix("1, 1:1, 6:8, 3:3, 4:5, 5:8, 9", ":", null).partOne());
+    }
+
+    @Test
+    void testDaySixPartTwoExamples()
+    {
+        assertEquals(16, new DaySix("1, 1:1, 6:8, 3:3, 4:5, 5:8, 9", ":", 32).partTwo());
+    }
+
+    private static final String daySevenExampleText =
+            "Step C must be finished before step A can begin." +
+            ":Step C must be finished before step F can begin." +
+            ":Step A must be finished before step B can begin." +
+            ":Step A must be finished before step D can begin." +
+            ":Step B must be finished before step E can begin." +
+            ":Step D must be finished before step E can begin." +
+            ":Step F must be finished before step E can begin.";
+
+    @Test
+    void testDaySevenPartOneExamples()
+    {
+        assertEquals("CABDFE", new DaySeven(daySevenExampleText, ":").partOne());
+    }
+
+    @Test
+    void testDaySevenPartTwoExamples()
+    {
+        assertEquals(15, new DaySeven(daySevenExampleText, ":", 60, 2).partTwo());
+    }
+
+    @Test
+    void testDayEightPartOneExamples()
+    {
+        assertEquals(138, new DayEight("2 3 0 3 10 11 12 1 1 0 1 99 2 1 1 2", ":").partOne());
+    }
+
+    @Test
+    void testDayEightPartTwoExamples()
+    {
+        assertEquals(66, new DayEight("2 3 0 3 10 11 12 1 1 0 1 99 2 1 1 2", ":").partTwo());
+    }
+
 }
