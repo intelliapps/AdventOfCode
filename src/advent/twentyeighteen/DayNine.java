@@ -9,7 +9,7 @@ public class DayNine extends AdventOfCode
         DayNine dayNine1 = new DayNine();
         System.out.println("Day Nine - part 1: " + dayNine1.partOne(416, 71975));
         DayNine dayNine2 = new DayNine();
-        System.out.println("Day Nine - part 2: " + dayNine2.partOne(416, 71975 * 100));
+        System.out.println("Day Nine - part 2: " + dayNine2.partOne(416, 7197500));
     }
 
     DayNine()
@@ -19,36 +19,59 @@ public class DayNine extends AdventOfCode
 
     int partOne(int numPlayers, int numMarbles)
     {
-        List<Integer> marblesPlayed = new ArrayList<>();
-        marblesPlayed.add(0);
         Map<Integer, Integer> scores = new HashMap<>();
         for (int i = 0; i <= numPlayers; i++) { scores.put(i, 0); }
-        int playerIndex = 1, currentMarbleIndex = 0;
+        List<Integer> marblesPlayed = new ArrayList<>();
+        marblesPlayed.add(0);
+        marblesPlayed.add(1);
 
-        for (int marbleIndex = 1; marbleIndex <= numMarbles; marbleIndex++)
+        int playerIndex = 2, index23 = 2, currentMarbleIndex = 1, currentInsertionIndex = 1;
+
+        for (int marbleNumber = 2; marbleNumber <= numMarbles; marbleNumber++)
         {
-            if (marbleIndex % 23 == 0)
+            if (index23 == 23)
             {
-                scores.put(playerIndex, scores.get(playerIndex) + marbleIndex);
+                System.out.println(marbleNumber);
+                scores.put(playerIndex, scores.get(playerIndex) + marbleNumber);
+
                 currentMarbleIndex = currentMarbleIndex - 7;
                 if (currentMarbleIndex < 0) { currentMarbleIndex = marblesPlayed.size() + currentMarbleIndex; }
                 scores.put(playerIndex, scores.get(playerIndex) + marblesPlayed.get(currentMarbleIndex));
                 marblesPlayed.remove(currentMarbleIndex);
                 if (currentMarbleIndex == marblesPlayed.size()) { currentMarbleIndex = 0; }
+
+                if (currentMarbleIndex == marblesPlayed.size()-1)
+                {
+                    currentInsertionIndex = 1;
+                }
+                else
+                {
+                    currentInsertionIndex = currentMarbleIndex + 2;
+                }
+
+                index23 = 1;
             }
             else
             {
-                if (currentMarbleIndex == marblesPlayed.size()-2) { currentMarbleIndex = marblesPlayed.size(); }
-                else if (currentMarbleIndex == marblesPlayed.size()-1) { currentMarbleIndex = 1; }
-                else { currentMarbleIndex = currentMarbleIndex + 2; }
+                currentMarbleIndex = currentInsertionIndex;
 
-                if (currentMarbleIndex == marblesPlayed.size()) { marblesPlayed.add(marbleIndex); }
-                else { marblesPlayed.add(currentMarbleIndex, marbleIndex); }
+                if (currentInsertionIndex == marblesPlayed.size())
+                {
+                    marblesPlayed.add(marbleNumber);
+                    currentInsertionIndex = 1;
+                }
+                else
+                {
+                    marblesPlayed.add(currentInsertionIndex, marbleNumber);
+                    currentInsertionIndex += 2;
+                }
+
+                index23++;
             }
 
-            //System.out.println("[" + playerIndex + "] (" + marblesPlayed.get(currentMarbleIndex) + ") " + marblesPlayed.toString());
+//            System.out.println("[" + playerIndex + "] (" + marblesPlayed.get(currentMarbleIndex) + ") " + marblesPlayed.toString());
 
-            playerIndex = playerIndex < numPlayers ? playerIndex+1 : 1;
+            playerIndex = playerIndex < numPlayers ? playerIndex + 1 : 1;
         }
 
         return scores.values().stream().max(Comparator.comparing(Integer::intValue)).orElse(0);

@@ -141,4 +141,14 @@ class AdventOfCodeTest
         assertEquals(66, new DayEight("2 3 0 3 10 11 12 1 1 0 1 99 2 1 1 2", ":").partTwo());
     }
 
+    @Test
+    void testDayNinePartOneExamples()
+    {
+        assertEquals(32, new DayNine().partOne(9, 25));
+        assertEquals(8317, new DayNine().partOne(10, 1618));
+        assertEquals(146373, new DayNine().partOne(13, 7999));
+        assertEquals(2764, new DayNine().partOne(17, 1104));
+        assertEquals(54718, new DayNine().partOne(21, 6111));
+        assertEquals(37305, new DayNine().partOne(30, 5807));
+    }
 }
