@@ -6,10 +6,9 @@ public class DayNine extends AdventOfCode
 {
     public static void main(String[] args) throws Exception
     {
-        DayNine dayNine1 = new DayNine();
-        System.out.println("Day Nine - part 1: " + dayNine1.partOne(416, 71975));
-        DayNine dayNine2 = new DayNine();
-        System.out.println("Day Nine - part 2: " + dayNine2.partOne(416, 7197500));
+        DayNine dayNine = new DayNine();
+        System.out.println("Day Nine - part 1: " + dayNine.partOneTwo(416, 71975));
+        System.out.println("Day Nine - part 2: " + dayNine.partOneTwo(416, 7197500));
     }
 
     DayNine()
@@ -17,7 +16,7 @@ public class DayNine extends AdventOfCode
         super("", "");
     }
 
-    int partOne(int numPlayers, int numMarbles)
+    int partOneTwo(int numPlayers, int numMarbles)
     {
         Map<Integer, Integer> scores = new HashMap<>();
         for (int i = 0; i <= numPlayers; i++) { scores.put(i, 0); }
@@ -75,10 +74,5 @@ public class DayNine extends AdventOfCode
         }
 
         return scores.values().stream().max(Comparator.comparing(Integer::intValue)).orElse(0);
-    }
-
-    int partTwo()
-    {
-        return 0;
     }
 }

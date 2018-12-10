@@ -144,12 +144,13 @@ class AdventOfCodeTest
     @Test
     void testDayNinePartOneExamples()
     {
-        assertEquals(32, new DayNine().partOne(9, 25));
-        assertEquals(8317, new DayNine().partOne(10, 1618));
-        assertEquals(146373, new DayNine().partOne(13, 7999));
-        assertEquals(2764, new DayNine().partOne(17, 1104));
-        assertEquals(54718, new DayNine().partOne(21, 6111));
-        assertEquals(37305, new DayNine().partOne(30, 5807));
+        DayNine dayNine = new DayNine();
+        assertEquals(32, new DayNine().partOneTwo(9, 25));
+        assertEquals(8317, new DayNine().partOneTwo(10, 1618));
+        assertEquals(146373, new DayNine().partOneTwo(13, 7999));
+        assertEquals(2764, new DayNine().partOneTwo(17, 1104));
+        assertEquals(54718, new DayNine().partOneTwo(21, 6111));
+        assertEquals(37305, new DayNine().partOneTwo(30, 5807));
     }
 
     private static final String dayTenExampleText =
