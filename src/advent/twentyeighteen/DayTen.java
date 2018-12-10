@@ -9,10 +9,8 @@ public class DayTen extends AdventOfCode
 {
     public static void main(String[] args) throws Exception
     {
-        DayTen dayTen1 = new DayTen(new File("input/2018/DayTen.txt"));
-        System.out.println("Day Ten - part 1: " + dayTen1.partOneTwo());
-        DayTen dayTen2 = new DayTen(new File("input/2018/DayTen.txt"));
-        System.out.println("Day Ten - part 2: " + dayTen2.partOneTwo());
+        DayTen dayTen = new DayTen(new File("input/2018/DayTen.txt"));
+        System.out.println("Day Ten: " + dayTen.partOneTwo());
     }
 
     private List<Point> points = new ArrayList<>();
