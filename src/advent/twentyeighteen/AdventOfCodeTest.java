@@ -141,4 +141,126 @@ class AdventOfCodeTest
         assertEquals(66, new DayEight("2 3 0 3 10 11 12 1 1 0 1 99 2 1 1 2", ":").partTwo());
     }
 
+    @Test
+    void testDayNinePartOneExamples()
+    {
+        DayNine dayNine = new DayNine();
+        assertEquals(32, new DayNine().partOneTwo(9, 25));
+        assertEquals(8317, new DayNine().partOneTwo(10, 1618));
+        assertEquals(146373, new DayNine().partOneTwo(13, 7999));
+        assertEquals(2764, new DayNine().partOneTwo(17, 1104));
+        assertEquals(54718, new DayNine().partOneTwo(21, 6111));
+        assertEquals(37305, new DayNine().partOneTwo(30, 5807));
+    }
+
+    private static final String dayTenExampleText =
+            "position=< 9,  1> velocity=< 0,  2>" +
+            ":position=< 7,  0> velocity=<-1,  0>" +
+            ":position=< 3, -2> velocity=<-1,  1>" +
+            ":position=< 6, 10> velocity=<-2, -1>" +
+            ":position=< 2, -4> velocity=< 2,  2>" +
+            ":position=<-6, 10> velocity=< 2, -2>" +
+            ":position=< 1,  8> velocity=< 1, -1>" +
+            ":position=< 1,  7> velocity=< 1,  0>" +
+            ":position=<-3, 11> velocity=< 1, -2>" +
+            ":position=< 7,  6> velocity=<-1, -1>" +
+            ":position=<-2,  3> velocity=< 1,  0>" +
+            ":position=<-4,  3> velocity=< 2,  0>" +
+            ":position=<10, -3> velocity=<-1,  1>" +
+            ":position=< 5, 11> velocity=< 1, -2>" +
+            ":position=< 4,  7> velocity=< 0, -1>" +
+            ":position=< 8, -2> velocity=< 0,  1>" +
+            ":position=<15,  0> velocity=<-2,  0>" +
+            ":position=< 1,  6> velocity=< 1,  0>" +
+            ":position=< 8,  9> velocity=< 0, -1>" +
+            ":position=< 3,  3> velocity=<-1,  1>" +
+            ":position=< 0,  5> velocity=< 0, -1>" +
+            ":position=<-2,  2> velocity=< 2,  0>" +
+            ":position=< 5, -2> velocity=< 1,  2>" +
+            ":position=< 1,  4> velocity=< 2,  1>" +
+            ":position=<-2,  7> velocity=< 2, -2>" +
+            ":position=< 3,  6> velocity=<-1, -1>" +
+            ":position=< 5,  0> velocity=< 1,  0>" +
+            ":position=<-6,  0> velocity=< 2,  0>" +
+            ":position=< 5,  9> velocity=< 1, -2>" +
+            ":position=<14,  7> velocity=<-2,  0>" +
+            ":position=<-3,  6> velocity=< 2, -1>";
+
+    @Test
+    void testDayTenPartTwoExamples()
+    {
+        assertEquals(3, new DayTen(dayTenExampleText, ":").partOneTwo());
+    }
+
+    @Test
+    void testDayElevenPartOneExamples()
+    {
+        Cell.serialNumber = 8;
+        assertEquals(4, new Cell(3, 5).powerLevel);
+        Cell.serialNumber = 57;
+        assertEquals(-5, new Cell(122,79).powerLevel);
+        Cell.serialNumber = 39;
+        assertEquals(0, new Cell(217,196).powerLevel);
+        Cell.serialNumber = 71;
+        assertEquals(4, new Cell(101,153).powerLevel);
+
+        DayEleven dayEleven = new DayEleven(18);
+        DayEleven.Square result = dayEleven.partOneTwo(3, 3);
+
+        assertEquals(33, result.originX);
+        assertEquals(45, result.originY);
+        assertEquals(29, result.power);
+
+        dayEleven = new DayEleven(42);
+        result = dayEleven.partOneTwo(3, 3);
+
+        assertEquals(21, result.originX);
+        assertEquals(61, result.originY);
+        assertEquals(30, result.power);
+    }
+
+    @Test
+    void testDayElevenPartTwoExamples()
+    {
+        DayEleven dayEleven = new DayEleven(18);
+        DayEleven.Square result = dayEleven.partOneTwo(1, 300);
+
+        assertEquals(90, result.originX);
+        assertEquals(269, result.originY);
+        assertEquals(16, result.size);
+        assertEquals(113, result.power);
+
+        dayEleven = new DayEleven(42);
+        result = dayEleven.partOneTwo(1, 300);
+
+        assertEquals(232, result.originX);
+        assertEquals(251, result.originY);
+        assertEquals(12, result.size);
+        assertEquals(119, result.power);
+    }
+
+    private static final String dayTwelveExampleTest =
+            "initial state: #..#.#..##......###...###," +
+            "," +
+            "...## => #," +
+            "..#.. => #," +
+            ".#... => #," +
+            ".#.#. => #," +
+            ".#.## => #," +
+            ".##.. => #," +
+            ".#### => #," +
+            "#.#.# => #," +
+            "#.### => #," +
+            "##.#. => #," +
+            "##.## => #," +
+            "###.. => #," +
+            "###.# => #," +
+            "####. => #";
+
+    @Test
+    void testDayTwelvePartOneExamples()
+    {
+        assertEquals(325, new DayTwelve(dayTwelveExampleTest, ",", true).partOne());
+    }
+
 }
