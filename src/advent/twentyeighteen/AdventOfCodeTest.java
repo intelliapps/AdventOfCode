@@ -239,4 +239,28 @@ class AdventOfCodeTest
         assertEquals(119, result.power);
     }
 
+    private static final String dayTwelveExampleTest =
+            "initial state: #..#.#..##......###...###," +
+            "," +
+            "...## => #," +
+            "..#.. => #," +
+            ".#... => #," +
+            ".#.#. => #," +
+            ".#.## => #," +
+            ".##.. => #," +
+            ".#### => #," +
+            "#.#.# => #," +
+            "#.### => #," +
+            "##.#. => #," +
+            "##.## => #," +
+            "###.. => #," +
+            "###.# => #," +
+            "####. => #";
+
+    @Test
+    void testDayTwelvePartOneExamples()
+    {
+        assertEquals(325, new DayTwelve(dayTwelveExampleTest, ",", true).partOne());
+    }
+
 }
