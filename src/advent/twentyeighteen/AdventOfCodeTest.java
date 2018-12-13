@@ -191,4 +191,52 @@ class AdventOfCodeTest
     {
         assertEquals(3, new DayTen(dayTenExampleText, ":").partOneTwo());
     }
+
+    @Test
+    void testDayElevenPartOneExamples()
+    {
+        Cell.serialNumber = 8;
+        assertEquals(4, new Cell(3, 5).powerLevel);
+        Cell.serialNumber = 57;
+        assertEquals(-5, new Cell(122,79).powerLevel);
+        Cell.serialNumber = 39;
+        assertEquals(0, new Cell(217,196).powerLevel);
+        Cell.serialNumber = 71;
+        assertEquals(4, new Cell(101,153).powerLevel);
+
+        DayEleven dayEleven = new DayEleven(18);
+        DayEleven.Square result = dayEleven.partOneTwo(3, 3);
+
+        assertEquals(33, result.originX);
+        assertEquals(45, result.originY);
+        assertEquals(29, result.power);
+
+        dayEleven = new DayEleven(42);
+        result = dayEleven.partOneTwo(3, 3);
+
+        assertEquals(21, result.originX);
+        assertEquals(61, result.originY);
+        assertEquals(30, result.power);
+    }
+
+    @Test
+    void testDayElevenPartTwoExamples()
+    {
+        DayEleven dayEleven = new DayEleven(18);
+        DayEleven.Square result = dayEleven.partOneTwo(1, 300);
+
+        assertEquals(90, result.originX);
+        assertEquals(269, result.originY);
+        assertEquals(16, result.size);
+        assertEquals(113, result.power);
+
+        dayEleven = new DayEleven(42);
+        result = dayEleven.partOneTwo(1, 300);
+
+        assertEquals(232, result.originX);
+        assertEquals(251, result.originY);
+        assertEquals(12, result.size);
+        assertEquals(119, result.power);
+    }
+
 }
