@@ -239,7 +239,7 @@ class AdventOfCodeTest
         assertEquals(119, result.power);
     }
 
-    private static final String dayTwelveExampleTest =
+    private static final String dayTwelveExampleText =
             "initial state: #..#.#..##......###...###," +
             "," +
             "...## => #," +
@@ -260,7 +260,36 @@ class AdventOfCodeTest
     @Test
     void testDayTwelvePartOneExamples()
     {
-        assertEquals(325, new DayTwelve(dayTwelveExampleTest, ",", true).partOne());
+        assertEquals(325, new DayTwelve(dayTwelveExampleText, ",", true).partOne());
+    }
+
+    private static final String dayThirteenExampleText =
+            "/->-\\        :" +
+            "|   |  /----\\:" +
+            "| /-+--+-\\  |:" +
+            "| | |  | v  |:" +
+            "\\-+-/  \\-+--/:" +
+            "  \\------/   ";
+
+    @Test
+    void testDayThirteenPartOneExamples()
+    {
+        assertEquals("7,3", new DayThirteen(dayThirteenExampleText, ":").partOne());
+    }
+
+    private static final String dayThirteenExampleText2 =
+            "/>-<\\  :" +
+            "|   |  :" +
+            "| /<+-\\:" +
+            "| | | v:" +
+            "\\>+</ |:" +
+            "  |   ^:" +
+            "  \\<->/";
+
+    @Test
+    void testDayThirteenPartTwoExamples()
+    {
+        assertEquals("6,4", new DayThirteen(dayThirteenExampleText2, ":").partTwo());
     }
 
 }
