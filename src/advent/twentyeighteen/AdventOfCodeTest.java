@@ -292,4 +292,22 @@ class AdventOfCodeTest
         assertEquals("6,4", new DayThirteen(dayThirteenExampleText2, ":").partTwo());
     }
 
+    @Test
+    void testDayFourteenPartOneExamples()
+    {
+        assertEquals("5158916779", new DayFourteen(new int[] { 3, 7 }).partOne(9));
+        assertEquals("0124515891", new DayFourteen(new int[] { 3, 7 }).partOne(5));
+        assertEquals("9251071085", new DayFourteen(new int[] { 3, 7 }).partOne(18));
+        assertEquals("5941429882", new DayFourteen(new int[] { 3, 7 }).partOne(2018));
+    }
+
+    @Test
+    void testDayFourteenPartTwoExamples()
+    {
+        assertEquals(9, new DayFourteen(new int[] { 3, 7 }).partTwo(new Integer[] { 5,1,5,8,9 }));
+        assertEquals(5, new DayFourteen(new int[] { 3, 7 }).partTwo(new Integer[] { 0,1,2,4,5 }));
+        assertEquals(18, new DayFourteen(new int[] { 3, 7 }).partTwo(new Integer[] { 9,2,5,1,0 }));
+        assertEquals(2018, new DayFourteen(new int[] { 3, 7 }).partTwo(new Integer[] { 5,9,4,1,4 }));
+    }
+
 }
