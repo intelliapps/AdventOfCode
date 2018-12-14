@@ -50,26 +50,26 @@ public class DayThirteen extends AdventOfCode
             newCarts = new TreeMap<>();
             Cart cart;
 
-            for (Integer oldCartLocation: carts.keySet())
+            for (Integer currentCartLocation: carts.keySet())
             {
-                // An earlier cart crashed into this later one before it had a chance to move, so skip it...
-                if (!cartLocations.contains(oldCartLocation)) { continue; }
+                // If an earlier cart crashed into this later one before it had a chance to move, skip it...
+                if (!cartLocations.contains(currentCartLocation)) { continue; }
 
-                cart = carts.get(oldCartLocation);
+                cart = carts.get(currentCartLocation);
                 cart.move();
                 newCartLocation = cart.r * 1000 + cart.c;
 
                 if (cartLocations.contains(newCartLocation))
                 {
                     if (stopOnCrash) { return cart.toString(); }
-                    cartLocations.remove(oldCartLocation);
+                    cartLocations.remove(currentCartLocation);
                     cartLocations.remove(newCartLocation);
                     newCarts.remove(newCartLocation);
                     System.out.println("" + tickNumber + ": Crash at " + cart + ", " + cartLocations.size() + " carts left");
                 }
                 else
                 {
-                    cartLocations.remove(oldCartLocation);
+                    cartLocations.remove(currentCartLocation);
                     cartLocations.add(newCartLocation);
                     newCarts.put(newCartLocation, cart);
                 }
@@ -89,6 +89,7 @@ public class DayThirteen extends AdventOfCode
         for (String input: inputs) { maxLineLength = Math.max(maxLineLength, input.length()); }
         network = new char[inputs.length][maxLineLength];
         char inputChar;
+
         for (int row = 0; row < inputs.length; row++)
         {
             locationOffset = row * 1000;
