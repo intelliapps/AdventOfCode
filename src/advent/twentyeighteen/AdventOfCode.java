@@ -9,6 +9,16 @@ class AdventOfCode
 
     AdventOfCode(File inputFile) throws Exception
     {
+        this.inputs = readLines(inputFile);
+    }
+
+    AdventOfCode(String inputText, String separator)
+    {
+        inputs = inputText.split(separator);
+    }
+
+    protected String[] readLines(File inputFile) throws Exception
+    {
         Scanner sc = new Scanner(inputFile);
         List<String> linesRead = new ArrayList<>();
 
@@ -17,11 +27,6 @@ class AdventOfCode
             linesRead.add(sc.nextLine());
         }
 
-        this.inputs = linesRead.toArray(new String[]{});
-    }
-
-    AdventOfCode(String inputText, String separator)
-    {
-        inputs = inputText.split(separator);
+        return linesRead.toArray(new String[]{});
     }
 }

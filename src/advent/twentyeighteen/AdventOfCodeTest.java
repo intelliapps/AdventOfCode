@@ -310,4 +310,11 @@ class AdventOfCodeTest
         assertEquals(2018, new DayFourteen(new int[] { 3, 7 }).partTwo(new Integer[] { 5,9,4,1,4 }));
     }
 
+    private static final String daySixteenExampleText = "" +
+            "Before: [3, 2, 1, 1]%9 2 1 2%After:  [3, 2, 2, 1]";
+    @Test
+    void testDaySixteenPartOneExamples()
+    {
+        assertEquals(1, new DaySixteen(daySixteenExampleText, "%").partOne());
+    }
 }
