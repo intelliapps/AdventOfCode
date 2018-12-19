@@ -317,4 +317,22 @@ class AdventOfCodeTest
     {
         assertEquals(1, new DaySixteen(daySixteenExampleText, "%").partOne());
     }
+
+    private static final String daySeventeenExampleText =
+            ".#.#...|#.:" +
+            ".....#|##|:" +
+            ".|..|...#.:" +
+            "..|#.....#:" +
+            "#.#|||#|#|:" +
+            "...#.||...:" +
+            ".|....|...:" +
+            "||...#|.#|:" +
+            "|.||||..|.:" +
+            "...#.|..|.";
+
+    @Test
+    void testDaySeventeenPartOneExamples()
+    {
+        assertEquals(1147, new DaySeventeen(daySeventeenExampleText, ":", 10).partOneTwo(10));
+    }
 }
