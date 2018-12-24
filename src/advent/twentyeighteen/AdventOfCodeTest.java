@@ -335,4 +335,21 @@ class AdventOfCodeTest
     {
         assertEquals(1147, new DaySeventeen(daySeventeenExampleText, ":", 10).partOneTwo(10));
     }
+
+    @Test
+    void testDayTwentyPartOneExamples()
+    {
+        assertEquals(3, new DayTwenty("^WNE$", ":").partOne());
+        assertEquals(10, new DayTwenty("^ENWWW(NEEE|SSE(EE|N))$", ":").partOne());
+        assertEquals(18, new DayTwenty("^ENNWSWW(NEWS|)SSSEEN(WNSE|)EE(SWEN|)NNN$", ":").partOne());
+        assertEquals(23, new DayTwenty("^ESSWWN(E|NNENN(EESS(WNSE|)SSS|WWWSSSSE(SW|NNNE)))$", ":").partOne());
+        assertEquals(31, new DayTwenty("^WSSEESWWWNW(S|NENNEEEENN(ESSSSW(NWSW|SSEN)|WSWWN(E|WWS(E|SS))))$", ":").partOne());
+    }
+
+    @Test
+    void testDayTwentyPartTwoExamples()
+    {
+        assertEquals(0, new DayTwenty("", ":").partTwo());
+    }
+
 }
