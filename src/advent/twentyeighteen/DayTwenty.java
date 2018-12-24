@@ -68,8 +68,7 @@ public class DayTwenty extends AdventOfCode
     {
         generateBaseMap();
         outputBaseMap();
-        List<Room> pathToFurthestRoom = findPathToFurthestRoom(new ArrayList<>(), rooms.get(0).get(0));
-        return pathToFurthestRoom.size()-1;
+        return findDoorsToFurthestRoom();
     }
 
     int partTwo()
@@ -90,18 +89,7 @@ public class DayTwenty extends AdventOfCode
         {
             switch (input.charAt(index))
             {
-                case '(':
-                    if ((input.indexOf('(', index+1) == -1
-                              || input.indexOf('|', index) < input.indexOf('(', index+1))
-                            && input.indexOf('|', index) == input.indexOf(')', index)-1)
-                    {
-                        /* skip detour - this assumes the furthest room is not at the end of a detour! */
-                        index = input.indexOf(')', index);
-                    }
-                    else {
-                        groupStarts.push(new Location(current.row, current.column));
-                    }
-                    break;
+                case '(': groupStarts.push(new Location(current.row, current.column)); break;
                 case '|': current = groupStarts.peek(); break;
                 case ')': groupStarts.pop(); break;
                 case 'N':
@@ -164,11 +152,6 @@ public class DayTwenty extends AdventOfCode
             rooms.put(current.row, new HashMap<>());
         }
 
-        if (baseMap.get(current.row).containsKey(current.column) && feature != ROOM)
-        {
-            System.out.println("Passed through door [" + current.row + "," + current.column + "] twice");
-        }
-
         baseMap.get(current.row).put(current.column, feature);
     }
 
@@ -180,9 +163,6 @@ public class DayTwenty extends AdventOfCode
 
     private void outputBaseMap(Location start)
     {
-        System.out.println ("Rows: " + rMin + " to " + rMax + ", Columns: " + cMin + " to " + cMax);
-        System.out.println ("Rooms: " + (Math.abs(rMax-rMin)+2)/2 * (Math.abs(cMax-cMin)+2)/2);
-
         Map<Integer, Character> row;
 
         for (int r = rMin-1; r <= rMax+1; r++)
@@ -199,44 +179,35 @@ public class DayTwenty extends AdventOfCode
         System.out.println();
     }
 
-    private List<Room> findPathToFurthestRoom(List<Room> previousRooms, Room currentRoom)
+    private int findDoorsToFurthestRoom()
     {
-        for (Room previousRoom: previousRooms)
+        int numDoors = 0;
+        Set<Room> currentRooms = new HashSet<>(), nextRooms;
+        currentRooms.add(rooms.get(0).get(0));
+        Room nextRoom;
+
+        while(numDoors == 0 || currentRooms.size() > 0)
         {
-            if (currentRoom == previousRoom) { return previousRooms; } // room is already in this path
-        }
+            numDoors++;
+            nextRooms = new HashSet<>();
 
-        Room lastRoom = previousRooms.size() > 0 ? previousRooms.get(previousRooms.size()-1) : null;
-        previousRooms = new ArrayList<>(previousRooms);
-        previousRooms.add(currentRoom);
-
-        if (previousRooms.size() > 1 && currentRoom.doors.size() == 1)
-        {
-            return previousRooms; // dead end
-        }
-
-        List<Room> pathToFurthestRoom = new ArrayList<>(), nextPathToFurthestRoom;
-        Room nextRoom, furthestRoom = null, nextFurthestRoom;
-
-        for (Character door : currentRoom.doors)
-        {
-            nextRoom = currentRoom.getRoomVia(door);
-            if (lastRoom != null && nextRoom == lastRoom) { continue; }
-
-            nextPathToFurthestRoom = findPathToFurthestRoom(previousRooms, nextRoom);
-            nextFurthestRoom = nextPathToFurthestRoom.get(nextPathToFurthestRoom.size()-1);
-
-            if (furthestRoom == null
-                    || (nextFurthestRoom == furthestRoom
-                        && nextPathToFurthestRoom.size() < pathToFurthestRoom.size())
-                    || (nextFurthestRoom != furthestRoom
-                        && nextPathToFurthestRoom.size() > pathToFurthestRoom.size()))
+            for (Room currentRoom: currentRooms)
             {
-                pathToFurthestRoom = nextPathToFurthestRoom;
-                furthestRoom = pathToFurthestRoom.get(pathToFurthestRoom.size()-1);
+                for (char door: currentRoom.doors)
+                {
+                    nextRoom = currentRoom.getRoomVia(door);
+
+                    if (baseMap.get(nextRoom.row).get(nextRoom.column) == ROOM)
+                    {
+                        baseMap.get(nextRoom.row).put(nextRoom.column, ' ');
+                        nextRooms.add(nextRoom);
+                    }
+                }
             }
+
+            currentRooms = nextRooms;
         }
 
-        return pathToFurthestRoom;
+        return numDoors-1;
     }
 }
