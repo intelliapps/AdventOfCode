@@ -45,8 +45,37 @@ class AdventOfCodeTest
     {
         assertEquals(30, new DayThree("R8,U5,L5,D3:U7,R6,D4,L4", ":").partTwo());
     }
+
+    @Test
+    void testDayFourHasRepeatingDigits()
     {
-        assertEquals(0, new DayThree("", ":").partTwo());
+        assertEquals(false, new DayFour("284639-748759").hasRepeatingDigits(284639, false));
+        assertEquals(false, new DayFour("284639-748759").hasRepeatingDigits(748759, false));
+        assertEquals(true, new DayFour("284639-748759").hasRepeatingDigits(284644, false));
+    }
+
+    @Test
+    void testDayFourHasOnlyTwoRepeatingDigits()
+    {
+        assertEquals(true, new DayFour("284639-748759").hasRepeatingDigits(334444, true));
+        assertEquals(true, new DayFour("284639-748759").hasRepeatingDigits(284644, true));
+        assertEquals(true, new DayFour("284639-748759").hasRepeatingDigits(331234, true));
+        assertEquals(true, new DayFour("284639-748759").hasRepeatingDigits(356634, true));
+        assertEquals(false, new DayFour("284639-748759").hasRepeatingDigits(333234, true));
+        assertEquals(false, new DayFour("284639-748759").hasRepeatingDigits(344434, true));
+        assertEquals(false, new DayFour("284639-748759").hasRepeatingDigits(345554, true));
+        assertEquals(false, new DayFour("284639-748759").hasRepeatingDigits(333331, true));
+        assertEquals(false, new DayFour("284639-748759").hasRepeatingDigits(344444, true));
+        assertEquals(false, new DayFour("284639-748759").hasRepeatingDigits(333333, true));
+    }
+
+    @Test
+    void testDayFourHasEscalatingDigits()
+    {
+        assertEquals(false, new DayFour("284639-748759").hasEscalatingDigits(284639));
+        assertEquals(false, new DayFour("284639-748759").hasEscalatingDigits(748759));
+        assertEquals(true, new DayFour("284639-748759").hasEscalatingDigits(288999));
+        assertEquals(true, new DayFour("284639-748759").hasEscalatingDigits(333333));
     }
 
     /*

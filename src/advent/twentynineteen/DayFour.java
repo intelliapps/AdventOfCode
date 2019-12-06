@@ -1,42 +1,89 @@
 package advent.twentynineteen;
 
-import advent.twentyeighteen.AdventOfCode;
+import advent.AdventOfCode;
 
-import java.io.File;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 
 public class DayFour extends AdventOfCode
 {
     public static void main(String[] args) throws Exception
     {
-        DayFour dayXXX1 = new DayFour(new File("input/2018/DayXXX.txt"));
-        System.out.println("Day XXX - part 1: " + dayXXX1.partOne());
-        DayFour dayXXX2 = new DayFour(new File("input/2018/DayXXX.txt"));
-        System.out.println("Day XXX - part 2: " + dayXXX2.partTwo());
+        DayFour dayFour1 = new DayFour("284639-748759");
+        System.out.println("Day Four - part 1: " + dayFour1.partOne()); // 895
+        DayFour dayFour2 = new DayFour("284639-748759");
+        System.out.println("Day Four - part 2: " + dayFour2.partTwo());
     }
 
-    private DayFour(File inputFile) throws Exception
+    private int rangeMin;
+    private int rangeMax;
+
+    DayFour(String input)
     {
-        super(inputFile);
-        init();
+        super(input, "-");
+        rangeMin = Integer.parseInt(inputs[0]);
+        rangeMax = Integer.parseInt(inputs[1]);
     }
 
-    DayFour(String inputText, String separator)
+    private int partOne()
     {
-        super(inputText, separator);
-        init();
+        int numMeetingCriteria = 0;
+
+        for (int candidate = rangeMin; candidate <= rangeMax; candidate++)
+        {
+            if (hasRepeatingDigits(candidate, false) && hasEscalatingDigits(candidate)) { numMeetingCriteria++; }
+        }
+
+        return numMeetingCriteria;
     }
 
-    int partOne()
+    private int partTwo()
     {
-        return 0;
+        int numMeetingCriteria = 0;
+
+        for (int candidate = rangeMin; candidate <= rangeMax; candidate++)
+        {
+            if (hasRepeatingDigits(candidate, true) && hasEscalatingDigits(candidate)) { numMeetingCriteria++; }
+        }
+
+        return numMeetingCriteria;
     }
 
-    int partTwo()
+    boolean hasRepeatingDigits(int value, boolean onlyTwo)
     {
-        return 0;
+        Pattern pattern = Pattern.compile("(\\d)(\\1)+");
+        Matcher matcher = pattern.matcher("" + value);
+        boolean hasRepeatingDigits = false;
+        int numRepeatingDigits;
+
+        while (matcher.find())
+        {
+            numRepeatingDigits = matcher.end() - matcher.start();
+            hasRepeatingDigits = onlyTwo ? numRepeatingDigits == 2 : numRepeatingDigits >= 2;
+            if (hasRepeatingDigits) break;
+        }
+
+        return hasRepeatingDigits;
     }
 
-    private void init()
+    boolean hasEscalatingDigits(int value)
     {
+        String valueText = "" + value;
+        boolean hasEscalatingDigits = true;
+        int charCodeOne, charCodeTwo;
+
+        for (int index = 0; index < valueText.length()-1; index++)
+        {
+            charCodeOne = valueText.charAt(index);
+            charCodeTwo = valueText.charAt(index + 1);
+            hasEscalatingDigits = charCodeOne <= charCodeTwo;
+            if (!hasEscalatingDigits) break;
+        }
+
+        return hasEscalatingDigits;
     }
 }
