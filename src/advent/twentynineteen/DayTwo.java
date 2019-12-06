@@ -28,69 +28,33 @@ public class DayTwo extends AdventOfCode
         super(inputText, separator);
     }
 
-    private void init()
-    {
-        program = new int[inputs.length];
-        for (int index = 0; index < inputs.length; index++) { program[index] = Integer.parseInt(inputs[index]); }
-        instructionPointer = 0;
-    }
-
     long partOneTest()
     {
-        init();
-        return runProgram();
+        IntCodeComputer intCodeComputer = new IntCodeComputer(inputs);
+        return intCodeComputer.runProgram();
     }
 
     private long partOne()
     {
-        init();
-        return runProgram(12, 2);
+        IntCodeComputer intCodeComputer = new IntCodeComputer(inputs);
+        return intCodeComputer.runProgram(12, 2);
     }
 
     private long partTwo(long expectedOutput)
     {
+        IntCodeComputer intCodeComputer;
         long programOutput;
 
         for (int noun = 0; noun < 100; noun++)
         {
             for (int verb = 0; verb < 100; verb++)
             {
-                init();
-                programOutput = runProgram(noun, verb);
+                intCodeComputer = new IntCodeComputer(inputs);
+                programOutput = intCodeComputer.runProgram(noun, verb);
                 if (programOutput == expectedOutput) { return (100 * noun) + verb; }
             }
         }
 
         return 0;
-    }
-
-    private int runProgram(int noun, int verb)
-    {
-        program[1] = noun;
-        program[2] = verb;
-        return runProgram();
-    }
-
-    private int runProgram()
-    {
-        do { instructionPointer = execTwoOperandInstruction(); }
-        while (program[instructionPointer] != 99);
-        return program[0];
-    }
-
-    private int execTwoOperandInstruction()
-    {
-        int opCode = program[instructionPointer];
-        int paramOneIndex = program[instructionPointer+1];
-        int paramTwoIndex = program[instructionPointer+2];
-        int resultIndex = program[instructionPointer+3];
-
-        switch(opCode)
-        {
-            case 1: program[resultIndex] = program[paramOneIndex] + program[paramTwoIndex]; break;
-            case 2: program[resultIndex] = program[paramOneIndex] * program[paramTwoIndex]; break;
-        }
-
-        return instructionPointer + 4;
     }
 }
