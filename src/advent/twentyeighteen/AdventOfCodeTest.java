@@ -310,6 +310,18 @@ class AdventOfCodeTest
         assertEquals(2018, new DayFourteen(new int[] { 3, 7 }).partTwo(new Integer[] { 5,9,4,1,4 }));
     }
 
+    @Test
+    void testDayFifteenPartOneExamples()
+    {
+        assertEquals(0, new DayFifteen("", ":").partOne());
+    }
+
+    @Test
+    void testDayFifteenPartTwoExamples()
+    {
+        assertEquals(0, new DayFifteen("", ":").partTwo());
+    }
+
     private static final String daySixteenExampleText = "" +
             "Before: [3, 2, 1, 1]%9 2 1 2%After:  [3, 2, 2, 1]";
     @Test
@@ -344,6 +356,8 @@ class AdventOfCodeTest
         assertEquals(18, new DayTwenty("^ENNWSWW(NEWS|)SSSEEN(WNSE|)EE(SWEN|)NNN$", ":").partOne());
         assertEquals(23, new DayTwenty("^ESSWWN(E|NNENN(EESS(WNSE|)SSS|WWWSSSSE(SW|NNNE)))$", ":").partOne());
         assertEquals(31, new DayTwenty("^WSSEESWWWNW(S|NENNEEEENN(ESSSSW(NWSW|SSEN)|WSWWN(E|WWS(E|SS))))$", ":").partOne());
+
+        assertEquals(4, new DayTwenty("^E(NN|S)E$", ":").partOne());
     }
 
     @Test
@@ -352,4 +366,15 @@ class AdventOfCodeTest
         assertEquals(0, new DayTwenty("", ":").partTwo());
     }
 
+    @Test
+    void testDayXXXPartOneExamples()
+    {
+        assertEquals(0, new DayXXX("", ":").partOne());
+    }
+
+    @Test
+    void testDayXXXPartTwoExamples()
+    {
+        assertEquals(0, new DayXXX("", ":").partTwo());
+    }
 }
