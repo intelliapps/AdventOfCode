@@ -41,7 +41,10 @@ class AdventOfCodeTest
     }
 
     @Test
-    void testDayXXXPartTwoExamples()
+    void testDayThreePartTwoExamples()
+    {
+        assertEquals(30, new DayThree("R8,U5,L5,D3:U7,R6,D4,L4", ":").partTwo());
+    }
     {
         assertEquals(0, new DayThree("", ":").partTwo());
     }
