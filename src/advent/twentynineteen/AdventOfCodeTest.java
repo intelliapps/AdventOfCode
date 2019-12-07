@@ -106,6 +106,18 @@ class AdventOfCodeTest
                 "999,1105,1,46,1101,1000,1,20,4,20,1105,1,46,98,99", ",").partTwo(9));
     }
 
+    @Test
+    void testDaySixPartOneExamples()
+    {
+        assertEquals(42, new DaySix("COM)B,B)C,C)D,D)E,E)F,B)G,G)H,D)I,E)J,J)K,K)L", ",").partOne());
+    }
+
+    @Test
+    void testDaySixPartTwoExamples()
+    {
+        assertEquals(4, new DaySix("COM)B,B)C,C)D,D)E,E)F,B)G,G)H,D)I,E)J,J)K,K)L,K)YOU,I)SAN", ",").partTwo());
+    }
+
     /*
     @Test
     void testDayXXXPartOneExamples()
