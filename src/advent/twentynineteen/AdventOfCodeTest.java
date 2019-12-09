@@ -24,7 +24,7 @@ class AdventOfCodeTest
     }
 
     @Test
-    void testDayTwoPartOneExamples()
+    void testDayTwoPartOneExamples() throws Exception
     {
         assertEquals(2, new DayTwo("1,0,0,0,99", ",").partOneTest());
         assertEquals(2, new DayTwo("2,3,0,3,99", ",").partOneTest());
@@ -33,7 +33,7 @@ class AdventOfCodeTest
     }
 
     @Test
-    void testDayThreePartOneExamples()
+    void testDayThreePartOneExamples() throws Exception
     {
         assertEquals(6, new DayThree("R8,U5,L5,D3:U7,R6,D4,L4", ":").partOne());
         assertEquals(159, new DayThree("R75,D30,R83,U83,L12,D49,R71,U7,L72:U62,R66,U55,R34,D71,R55,D58,R83", ":").partOne());
@@ -79,7 +79,7 @@ class AdventOfCodeTest
     }
 
     @Test
-    void testDayFivePartTwoExamples()
+    void testDayFivePartTwoExamples() throws Exception
     {
         assertEquals(0, new DayFive("3,9,8,9,10,9,4,9,99,-1,8", ",").partTwo(7)); // input == 8, true
         assertEquals(1, new DayFive("3,9,8,9,10,9,4,9,99,-1,8", ",").partTwo(8)); // input == 8, false

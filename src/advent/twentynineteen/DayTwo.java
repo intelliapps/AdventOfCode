@@ -13,8 +13,8 @@ public class DayTwo extends AdventOfCode
         Scanner sc = new Scanner(inputFile);
         String inputText = sc.nextLine();
 
-        long dayOneResult = new DayTwo(inputText, ",").partOne();
-        long dayTwoResult = new DayTwo(inputText, ",").partTwo(19690720);
+        long dayOneResult = new DayTwo(inputText, ",").partOne(); // 3224742
+        long dayTwoResult = new DayTwo(inputText, ",").partTwo(19690720); // 7960
 
         System.out.println("Day Two - part 1: " + dayOneResult);
         System.out.println("Day Two - part 2: " + dayTwoResult);
@@ -28,19 +28,19 @@ public class DayTwo extends AdventOfCode
         super(inputText, separator);
     }
 
-    long partOneTest()
+    long partOneTest() throws Exception
     {
         IntCodeComputer intCodeComputer = new IntCodeComputer(inputs);
         return intCodeComputer.runProgram();
     }
 
-    private long partOne()
+    private long partOne() throws Exception
     {
         IntCodeComputer intCodeComputer = new IntCodeComputer(inputs);
         return intCodeComputer.runProgram(12, 2);
     }
 
-    private long partTwo(long expectedOutput)
+    private long partTwo(long expectedOutput) throws Exception
     {
         IntCodeComputer intCodeComputer;
         long programOutput;

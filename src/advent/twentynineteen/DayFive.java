@@ -3,7 +3,9 @@ package advent.twentynineteen;
 import advent.AdventOfCode;
 
 import java.io.File;
+import java.util.Arrays;
 import java.util.Scanner;
+import java.util.concurrent.LinkedBlockingQueue;
 
 public class DayFive extends AdventOfCode
 {
@@ -14,9 +16,9 @@ public class DayFive extends AdventOfCode
         String inputText = sc.nextLine();
 
         DayFive dayFive1 = new DayFive(inputText, ",");
-        System.out.println("Day Five - part 1: " + dayFive1.partOne(1));
+        System.out.println("Day Five - part 1: " + dayFive1.partOne(1)); // 6745903
         DayFive dayFive2 = new DayFive(inputText, ",");
-        System.out.println("Day Five - part 2: " + dayFive2.partTwo(5));
+        System.out.println("Day Five - part 2: " + dayFive2.partTwo(5)); // 9168267
     }
 
     DayFive(String inputText, String separator)
@@ -24,17 +26,23 @@ public class DayFive extends AdventOfCode
         super(inputText, separator);
     }
 
-    private int partOne(int input)
+    private int partOne(int programInput) throws Exception
     {
-        IntCodeComputer intCodeComputer = new IntCodeComputer(inputs, new int[] {input});
+        LinkedBlockingQueue<Integer> programInputs = new LinkedBlockingQueue<>();
+        programInputs.add(programInput);
+        LinkedBlockingQueue<Integer> programOutputs = new LinkedBlockingQueue<>();
+        IntCodeComputer intCodeComputer = new IntCodeComputer(inputs, programInputs, programOutputs);
         intCodeComputer.runProgram();
-        return intCodeComputer.getLastOutput();
+        return programOutputs.size() > 0 ? Arrays.asList(programOutputs.toArray(new Integer[]{})).get(programOutputs.size()-1) : -1;
     }
 
-    int partTwo(int input)
+    int partTwo(int programInput) throws Exception
     {
-        IntCodeComputer intCodeComputer = new IntCodeComputer(inputs, new int[] {input});
+        LinkedBlockingQueue<Integer> programInputs = new LinkedBlockingQueue<>();
+        programInputs.add(programInput);
+        LinkedBlockingQueue<Integer> programOutputs = new LinkedBlockingQueue<>();
+        IntCodeComputer intCodeComputer = new IntCodeComputer(inputs, programInputs, programOutputs);
         intCodeComputer.runProgram();
-        return intCodeComputer.getLastOutput();
+        return programOutputs.size() > 0 ? Arrays.asList(programOutputs.toArray(new Integer[]{})).get(programOutputs.size()-1) : -1;
     }
 }

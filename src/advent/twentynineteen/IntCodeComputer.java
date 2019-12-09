@@ -1,42 +1,37 @@
 package advent.twentynineteen;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.LinkedBlockingQueue;
 
 public class IntCodeComputer
 {
     private int[] program;
-    private int[] inputs;
-    private List<Integer> outputs;
+    private BlockingQueue<Integer> inputs;
+    private BlockingQueue<Integer> outputs;
     private int instructionPointer;
 
     IntCodeComputer(String[] instructions)
     {
-        this(instructions, new int[]{});
+        this(instructions, new LinkedBlockingQueue<>(), new LinkedBlockingQueue<>());
     }
 
-    IntCodeComputer(String[] instructions, int[] inputs)
+    IntCodeComputer(String[] instructions, BlockingQueue<Integer> inputs, BlockingQueue<Integer> outputs)
     {
         program = new int[instructions.length];
         for (int index = 0; index < instructions.length; index++) { program[index] = Integer.parseInt(instructions[index]); }
         this.inputs = inputs;
+        this.outputs = outputs;
     }
 
-    int getLastOutput()
-    {
-        return outputs.size() > 0 ? outputs.get(outputs.size()-1) : -1;
-    }
-
-    int runProgram(int noun, int verb)
+    int runProgram(int noun, int verb) throws Exception
     {
         program[1] = noun;
         program[2] = verb;
         return runProgram();
     }
 
-    int runProgram()
+    int runProgram() throws Exception
     {
-        outputs = new ArrayList<>();
         instructionPointer = 0;
         int opCode;
         int inputNo = 0;
@@ -56,7 +51,7 @@ public class IntCodeComputer
                     instructionPointer = execTwoOperandInstruction();
                     break;
                 case 3:
-                    instructionPointer = execSaveInstruction(inputs[inputNo++]);
+                    instructionPointer = execSaveInstruction(inputs.take());
                     break;
                 case 4:
                     instructionPointer = execOutputInstruction();
