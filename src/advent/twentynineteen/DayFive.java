@@ -21,9 +21,12 @@ public class DayFive extends AdventOfCode
         System.out.println("Day Five - part 2: " + dayFive2.partTwo(5)); // 9168267
     }
 
+    private int[] program;
+
     DayFive(String inputText, String separator)
     {
         super(inputText, separator);
+        init();
     }
 
     private int partOne(int programInput) throws Exception
@@ -31,8 +34,8 @@ public class DayFive extends AdventOfCode
         LinkedBlockingQueue<Integer> programInputs = new LinkedBlockingQueue<>();
         programInputs.add(programInput);
         LinkedBlockingQueue<Integer> programOutputs = new LinkedBlockingQueue<>();
-        IntCodeComputer intCodeComputer = new IntCodeComputer(inputs, programInputs, programOutputs);
-        intCodeComputer.runProgram();
+        IntCodeComputer intCodeComputer = new IntCodeComputer(program);
+        intCodeComputer.runProgram(programInputs, programOutputs);
         return programOutputs.size() > 0 ? Arrays.asList(programOutputs.toArray(new Integer[]{})).get(programOutputs.size()-1) : -1;
     }
 
@@ -41,8 +44,14 @@ public class DayFive extends AdventOfCode
         LinkedBlockingQueue<Integer> programInputs = new LinkedBlockingQueue<>();
         programInputs.add(programInput);
         LinkedBlockingQueue<Integer> programOutputs = new LinkedBlockingQueue<>();
-        IntCodeComputer intCodeComputer = new IntCodeComputer(inputs, programInputs, programOutputs);
-        intCodeComputer.runProgram();
+        IntCodeComputer intCodeComputer = new IntCodeComputer(program);
+        intCodeComputer.runProgram(programInputs, programOutputs);
         return programOutputs.size() > 0 ? Arrays.asList(programOutputs.toArray(new Integer[]{})).get(programOutputs.size()-1) : -1;
+    }
+
+    private void init()
+    {
+        program = new int[inputs.length];
+        for (int index = 0; index < inputs.length; index++) { program[index] = Integer.parseInt(inputs[index]); }
     }
 }

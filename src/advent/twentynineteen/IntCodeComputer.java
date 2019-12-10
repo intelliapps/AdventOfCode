@@ -6,35 +6,22 @@ import java.util.concurrent.LinkedBlockingQueue;
 public class IntCodeComputer
 {
     private int[] program;
-    private BlockingQueue<Integer> inputs;
-    private BlockingQueue<Integer> outputs;
     private int instructionPointer;
 
-    IntCodeComputer(String[] instructions)
+    IntCodeComputer(int[] program)
     {
-        this(instructions, new LinkedBlockingQueue<>(), new LinkedBlockingQueue<>());
-    }
-
-    IntCodeComputer(String[] instructions, BlockingQueue<Integer> inputs, BlockingQueue<Integer> outputs)
-    {
-        program = new int[instructions.length];
-        for (int index = 0; index < instructions.length; index++) { program[index] = Integer.parseInt(instructions[index]); }
-        this.inputs = inputs;
-        this.outputs = outputs;
-    }
-
-    int runProgram(int noun, int verb) throws Exception
-    {
-        program[1] = noun;
-        program[2] = verb;
-        return runProgram();
+        this.program = program;
     }
 
     int runProgram() throws Exception
     {
+        return runProgram(new LinkedBlockingQueue<>(), new LinkedBlockingQueue<>());
+    }
+
+    int runProgram(BlockingQueue<Integer> programInputs, BlockingQueue<Integer> programOutputs) throws Exception
+    {
         instructionPointer = 0;
         int opCode;
-        int inputNo = 0;
 
         do
         {
@@ -51,10 +38,10 @@ public class IntCodeComputer
                     instructionPointer = execTwoOperandInstruction();
                     break;
                 case 3:
-                    instructionPointer = execSaveInstruction(inputs.take());
+                    instructionPointer = execSaveInstruction(programInputs.take());
                     break;
                 case 4:
-                    instructionPointer = execOutputInstruction();
+                    instructionPointer = execOutputInstruction(programOutputs);
                     break;
             }
         }
@@ -156,11 +143,11 @@ public class IntCodeComputer
         return instructionPointer + 2;
     }
 
-    private int execOutputInstruction()
+    private int execOutputInstruction(BlockingQueue<Integer> programOutputs)
     {
         int paramMode = program[instructionPointer] / 100;
         int paramIndex = paramMode == 0 ? program[instructionPointer+1] : instructionPointer+1;
-        outputs.add(program[paramIndex]);
+        programOutputs.add(program[paramIndex]);
         System.out.println("Output index " + paramIndex + ": " + program[paramIndex]);
         return instructionPointer + 2;
     }

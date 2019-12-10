@@ -21,7 +21,6 @@ public class DayTwo extends AdventOfCode
     }
 
     private int[] program;
-    private int instructionPointer;
 
     DayTwo(String inputText, String separator)
     {
@@ -30,14 +29,15 @@ public class DayTwo extends AdventOfCode
 
     long partOneTest() throws Exception
     {
-        IntCodeComputer intCodeComputer = new IntCodeComputer(inputs);
+        IntCodeComputer intCodeComputer = new IntCodeComputer(program);
         return intCodeComputer.runProgram();
     }
 
     private long partOne() throws Exception
     {
-        IntCodeComputer intCodeComputer = new IntCodeComputer(inputs);
-        return intCodeComputer.runProgram(12, 2);
+        init(12, 2);
+        IntCodeComputer intCodeComputer = new IntCodeComputer(program);
+        return intCodeComputer.runProgram();
     }
 
     private long partTwo(long expectedOutput) throws Exception
@@ -49,12 +49,21 @@ public class DayTwo extends AdventOfCode
         {
             for (int verb = 0; verb < 100; verb++)
             {
-                intCodeComputer = new IntCodeComputer(inputs);
-                programOutput = intCodeComputer.runProgram(noun, verb);
+                init(noun, verb);
+                intCodeComputer = new IntCodeComputer(program);
+                programOutput = intCodeComputer.runProgram();
                 if (programOutput == expectedOutput) { return (100 * noun) + verb; }
             }
         }
 
         return 0;
+    }
+
+    private void init(int noun, int verb)
+    {
+        program = new int[inputs.length];
+        for (int index = 0; index < inputs.length; index++) { program[index] = Integer.parseInt(inputs[index]); }
+        program[1] = noun;
+        program[2] = verb;
     }
 }
