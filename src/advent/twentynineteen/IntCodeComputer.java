@@ -1,7 +1,7 @@
 package advent.twentynineteen;
 
-import java.util.LinkedList;
-import java.util.Queue;
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.LinkedBlockingQueue;
 
 public class IntCodeComputer
 {
@@ -23,10 +23,10 @@ public class IntCodeComputer
 
     int runProgram() throws Exception
     {
-        return runProgram(new LinkedList<>(), new LinkedList<>());
+        return runProgram(new LinkedBlockingQueue<>(), new LinkedBlockingQueue<>());
     }
 
-    int runProgram(Queue<Integer> programInputs, Queue<Integer> programOutputs) throws Exception
+    int runProgram(BlockingQueue<Integer> programInputs, BlockingQueue<Integer> programOutputs) throws Exception
     {
         instructionPointer = 0;
         int opCode;
@@ -46,7 +46,7 @@ public class IntCodeComputer
                     instructionPointer = execTwoOperandInstruction();
                     break;
                 case 3:
-                    instructionPointer = execSaveInstruction(programInputs.remove());
+                    instructionPointer = execSaveInstruction(programInputs.take());
                     break;
                 case 4:
                     instructionPointer = execOutputInstruction(programOutputs);
@@ -151,7 +151,7 @@ public class IntCodeComputer
         return instructionPointer + 2;
     }
 
-    private int execOutputInstruction(Queue<Integer> programOutputs)
+    private int execOutputInstruction(BlockingQueue<Integer> programOutputs)
     {
         int paramMode = program[instructionPointer] / 100;
         int paramIndex = paramMode == 0 ? program[instructionPointer+1] : instructionPointer+1;

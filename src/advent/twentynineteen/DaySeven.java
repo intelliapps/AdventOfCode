@@ -4,9 +4,8 @@ import advent.AdventOfCode;
 
 import java.io.File;
 import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.Queue;
 import java.util.Scanner;
+import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
 public class DaySeven extends AdventOfCode
@@ -35,6 +34,7 @@ public class DaySeven extends AdventOfCode
 
     int partOne() throws Exception
     {
+        generatePhaseSettingPermutations(new int[]{}, new int[] {0,1,2,3,4});
         int maxThrusterSignal = 0;
 
         for (int[] phaseSetting: phaseSettingPermutations)
@@ -48,32 +48,32 @@ public class DaySeven extends AdventOfCode
 
     int partTwo()
     {
+        generatePhaseSettingPermutations(new int[]{}, new int[] {5,6,7,8,9});
         return 0;
     }
 
     int tryPhaseSetting(int[] phaseSetting) throws Exception
     {
-        Queue<Integer> ampInput, ampOutput = new LinkedList<>();;
+        BlockingQueue<Integer> ampInput, ampOutput = null;
         IntCodeComputer amp;
 
         for (int index = 0; index < 5; index++)
         {
             ampInput = new LinkedBlockingQueue<>();
             ampInput.add(phaseSetting[index]);
-            ampInput.add(index == 0 ? 0 : ampOutput.remove());
+            ampInput.add(ampOutput == null ? 0 : ampOutput.remove());
             ampOutput = new LinkedBlockingQueue<>();
             amp = new IntCodeComputer("Amp" + (index+1), program.clone());
             try { amp.runProgram(ampInput, ampOutput); } catch (Exception ex) { ex.printStackTrace(); }
         }
 
-        return ampOutput.remove();
+        return ampOutput.take();
     }
 
     private void init()
     {
         program = new int[inputs.length];
         for (int index = 0; index < inputs.length; index++) { program[index] = Integer.parseInt(inputs[index]); }
-        generatePhaseSettingPermutations(new int[]{}, new int[] {0,1,2,3,4});
     }
 
     private void generatePhaseSettingPermutations(int[] digitsUsed, int[] digitsRemaining)
