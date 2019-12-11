@@ -1,24 +1,32 @@
 package advent.twentynineteen;
 
-import java.util.concurrent.BlockingQueue;
-import java.util.concurrent.LinkedBlockingQueue;
+import java.util.LinkedList;
+import java.util.Queue;
 
 public class IntCodeComputer
 {
+    private String name = "program";
     private int[] program;
     private int instructionPointer;
+    private boolean debug = true;
 
     IntCodeComputer(int[] program)
     {
         this.program = program;
     }
 
-    int runProgram() throws Exception
+    IntCodeComputer(String name, int[] program)
     {
-        return runProgram(new LinkedBlockingQueue<>(), new LinkedBlockingQueue<>());
+        this.name = name;
+        this.program = program;
     }
 
-    int runProgram(BlockingQueue<Integer> programInputs, BlockingQueue<Integer> programOutputs) throws Exception
+    int runProgram() throws Exception
+    {
+        return runProgram(new LinkedList<>(), new LinkedList<>());
+    }
+
+    int runProgram(Queue<Integer> programInputs, Queue<Integer> programOutputs) throws Exception
     {
         instructionPointer = 0;
         int opCode;
@@ -38,7 +46,7 @@ public class IntCodeComputer
                     instructionPointer = execTwoOperandInstruction();
                     break;
                 case 3:
-                    instructionPointer = execSaveInstruction(programInputs.take());
+                    instructionPointer = execSaveInstruction(programInputs.remove());
                     break;
                 case 4:
                     instructionPointer = execOutputInstruction(programOutputs);
@@ -74,7 +82,7 @@ public class IntCodeComputer
     private int execJumpIfTrueInstruction(int paramOneIndex, int paramTwoIndex)
     {
         instructionPointer = program[paramOneIndex] != 0 ? program[paramTwoIndex] : instructionPointer + 3;
-        System.out.println(
+        if (debug) System.out.println(
                 "Jump if index " + paramOneIndex + " true (" + program[paramOneIndex] +  ")"
                 + " to index " + paramTwoIndex + '(' + program[paramTwoIndex] + ')'
         );
@@ -84,7 +92,7 @@ public class IntCodeComputer
     private int execJumpIfFalseInstruction(int paramOneIndex, int paramTwoIndex)
     {
         instructionPointer = program[paramOneIndex] == 0 ? program[paramTwoIndex] : instructionPointer + 3;
-        System.out.println(
+        if (debug) System.out.println(
                 "Jump if index " + paramOneIndex + " false (" + program[paramOneIndex] +  ")"
                         + " to index " + paramTwoIndex + '(' + program[paramTwoIndex] + ')'
         );
@@ -94,7 +102,7 @@ public class IntCodeComputer
     private int execAddInstruction(int paramOneIndex, int paramTwoIndex, int resultIndex)
     {
         program[resultIndex] = program[paramOneIndex] + program[paramTwoIndex];
-        System.out.println(
+        if (debug) System.out.println(
                 "Add index " + paramOneIndex + '(' + program[paramOneIndex] + ")"
                         + " + index " + paramTwoIndex + '(' + program[paramTwoIndex] + ')'
                         + " into index " + resultIndex + '(' + program[resultIndex] + ')'
@@ -105,7 +113,7 @@ public class IntCodeComputer
     private int execMultiplyInstruction(int paramOneIndex, int paramTwoIndex, int resultIndex)
     {
         program[resultIndex] = program[paramOneIndex] * program[paramTwoIndex];
-        System.out.println(
+        if (debug) System.out.println(
                 "Multiply index " + paramOneIndex + '(' + program[paramOneIndex] + ")"
                         + " * index " + paramTwoIndex + '(' + program[paramTwoIndex] + ')'
                         + " into index " + resultIndex + '(' + program[resultIndex] + ')'
@@ -116,7 +124,7 @@ public class IntCodeComputer
     private int execLessThanInstruction(int paramOneIndex, int paramTwoIndex, int resultIndex)
     {
         program[resultIndex] = program[paramOneIndex] < program[paramTwoIndex] ? 1 : 0;
-        System.out.println(
+        if (debug) System.out.println(
                 "Evaluate index " + paramOneIndex + '(' + program[paramOneIndex] + ")"
                         + " < index " + paramTwoIndex + '(' + program[paramTwoIndex] + ')'
                         + " into index " + resultIndex + '(' + program[resultIndex] + ')'
@@ -127,7 +135,7 @@ public class IntCodeComputer
     private int execEqualsInstruction(int paramOneIndex, int paramTwoIndex, int resultIndex)
     {
         program[resultIndex] = program[paramOneIndex] == program[paramTwoIndex] ? 1 : 0;
-        System.out.println(
+        if (debug) System.out.println(
                 "Evaluate index " + paramOneIndex + '(' + program[paramOneIndex] + ")"
                         + " == index " + paramTwoIndex + '(' + program[paramTwoIndex] + ')'
                         + " into index " + resultIndex + '(' + program[resultIndex] + ')'
@@ -139,16 +147,16 @@ public class IntCodeComputer
     {
         int paramIndex = program[instructionPointer+1];
         program[paramIndex] = input;
-        System.out.println("Saved input " + input + " to index " + paramIndex);
+        if (debug) System.out.println(name + ": Saved input " + input + " to index " + paramIndex);
         return instructionPointer + 2;
     }
 
-    private int execOutputInstruction(BlockingQueue<Integer> programOutputs)
+    private int execOutputInstruction(Queue<Integer> programOutputs)
     {
         int paramMode = program[instructionPointer] / 100;
         int paramIndex = paramMode == 0 ? program[instructionPointer+1] : instructionPointer+1;
         programOutputs.add(program[paramIndex]);
-        System.out.println("Output index " + paramIndex + ": " + program[paramIndex]);
+        if (debug) System.out.println(name + ": Output index " + paramIndex + ": " + program[paramIndex]);
         return instructionPointer + 2;
     }
 }

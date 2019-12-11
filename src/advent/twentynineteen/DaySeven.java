@@ -3,8 +3,10 @@ package advent.twentynineteen;
 import advent.AdventOfCode;
 
 import java.io.File;
+import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.Queue;
 import java.util.Scanner;
-import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
 public class DaySeven extends AdventOfCode
@@ -21,6 +23,8 @@ public class DaySeven extends AdventOfCode
         System.out.println("Day Seven - part 2: " + daySeven2.partTwo());
     }
 
+    private int[][] phaseSettingPermutations = new int[120][5];
+    private int permutationNo = 0;
     private int[] program;
 
     DaySeven(String inputText, String separator)
@@ -31,7 +35,15 @@ public class DaySeven extends AdventOfCode
 
     int partOne() throws Exception
     {
-        return 0;
+        int maxThrusterSignal = 0;
+
+        for (int[] phaseSetting: phaseSettingPermutations)
+        {
+            System.out.println("Trying phase setting " + Arrays.toString(phaseSetting));
+            maxThrusterSignal = Math.max(maxThrusterSignal, tryPhaseSetting(phaseSetting));
+        }
+
+        return maxThrusterSignal;
     }
 
     int partTwo()
@@ -39,36 +51,55 @@ public class DaySeven extends AdventOfCode
         return 0;
     }
 
-    int tryPhaseSetting(int[] phaseSettings) throws Exception
+    int tryPhaseSetting(int[] phaseSetting) throws Exception
     {
-        BlockingQueue<Integer> ampInput, ampOutput = null;
+        Queue<Integer> ampInput, ampOutput = new LinkedList<>();;
         IntCodeComputer amp;
 
         for (int index = 0; index < 5; index++)
         {
-            if (ampOutput == null)
-            {
-                ampInput = new LinkedBlockingQueue<>();
-                ampInput.add(phaseSettings[0]);
-                ampInput.add(0);
-            }
-            else
-            {
-                ampInput = ampOutput;
-            }
-
+            ampInput = new LinkedBlockingQueue<>();
+            ampInput.add(phaseSetting[index]);
+            ampInput.add(index == 0 ? 0 : ampOutput.remove());
             ampOutput = new LinkedBlockingQueue<>();
-            if (index != 4) { ampOutput.add(phaseSettings[index+1]); }
-            amp = new IntCodeComputer(program.clone());
-            amp.runProgram(ampInput, ampOutput);
+            amp = new IntCodeComputer("Amp" + (index+1), program.clone());
+            try { amp.runProgram(ampInput, ampOutput); } catch (Exception ex) { ex.printStackTrace(); }
         }
 
-        return ampOutput.take();
+        return ampOutput.remove();
     }
 
     private void init()
     {
         program = new int[inputs.length];
         for (int index = 0; index < inputs.length; index++) { program[index] = Integer.parseInt(inputs[index]); }
+        generatePhaseSettingPermutations(new int[]{}, new int[] {0,1,2,3,4});
+    }
+
+    private void generatePhaseSettingPermutations(int[] digitsUsed, int[] digitsRemaining)
+    {
+        if (digitsRemaining.length == 0)
+        {
+            System.arraycopy(digitsUsed, 0, phaseSettingPermutations[permutationNo++], 0, digitsUsed.length);
+        }
+
+        int[] digitsUsedNext, digitsRemainingNext;
+        int drNextIndex;
+
+        for (int nextDigitIndex = 0; nextDigitIndex < digitsRemaining.length; nextDigitIndex++)
+        {
+            digitsUsedNext = new int[digitsUsed.length+1];
+            digitsRemainingNext = new int[digitsRemaining.length-1];
+            System.arraycopy(digitsUsed, 0, digitsUsedNext, 0, digitsUsed.length);
+            drNextIndex = 0;
+
+            for (int remainingDigitIndex = 0; remainingDigitIndex < digitsRemaining.length; remainingDigitIndex++)
+            {
+                if (remainingDigitIndex == nextDigitIndex) { digitsUsedNext[digitsUsed.length] = digitsRemaining[nextDigitIndex]; }
+                else { digitsRemainingNext[drNextIndex++] = digitsRemaining[remainingDigitIndex]; }
+            }
+
+            generatePhaseSettingPermutations(digitsUsedNext, digitsRemainingNext);
+        }
     }
 }
