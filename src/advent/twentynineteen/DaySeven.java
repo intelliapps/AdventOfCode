@@ -95,7 +95,7 @@ public class DaySeven extends AdventOfCode
 
         ampInput1.put(0);
 
-        Thread.sleep(10);
+        Thread.sleep(10); // why does this work??!!
 
         return ampOutput5.take();
     }
