@@ -139,6 +139,13 @@ class AdventOfCodeTest
     void testDayEightGenerateLayers()
     {
         assertEquals(Arrays.deepToString(new int[][][] {{{1,2,3},{4,5,6}},{{7,8,9},{0,1,2}}}), Arrays.deepToString(new DayEight("123456789012", ":", 3, 2).getLayers()));
+        assertEquals(Arrays.deepToString(new int[][][] {{{0,2},{2,2}},{{1,1},{2,2}},{{2,2},{1,2}},{{0,0},{0,0}}}), Arrays.deepToString(new DayEight("0222112222120000", ":", 2, 2).getLayers()));
+    }
+
+    @Test
+    void testDayEightGenerateImage()
+    {
+        assertEquals(Arrays.deepToString(new int[][] {{0,1},{1,0}}), Arrays.deepToString(new DayEight("0222112222120000", ":", 2, 2).generateImage()));
     }
 
     /*

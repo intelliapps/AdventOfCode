@@ -3,6 +3,7 @@ package advent.twentynineteen;
 import advent.AdventOfCode;
 
 import java.io.File;
+import java.util.Arrays;
 
 public class DayEight extends AdventOfCode
 {
@@ -11,7 +12,7 @@ public class DayEight extends AdventOfCode
         DayEight dayEight1 = new DayEight(new File("input/2019/DayEight.txt"), 25, 6);
         System.out.println("Day Eight - part 1: " + dayEight1.partOne());
         DayEight dayEight2 = new DayEight(new File("input/2019/DayEight.txt"), 25, 6);
-        System.out.println("Day Eight - part 2: " + dayEight2.partTwo());
+        dayEight2.partTwo();
     }
 
     private boolean debug = false;
@@ -53,9 +54,10 @@ public class DayEight extends AdventOfCode
         return layerCounts[layerNoWithFewestZeros][1] * layerCounts[layerNoWithFewestZeros][2];
     }
 
-    int partTwo()
+    void partTwo()
     {
-        return 0;
+        int[][] image = generateImage();
+        outputImage(image);
     }
 
     private void init(int width, int height)
@@ -86,6 +88,33 @@ public class DayEight extends AdventOfCode
                     layerCounts[layerNo][data] = layerCounts[layerNo][data] + 1;
                 }
             }
+        }
+    }
+
+    int[][] generateImage()
+    {
+        int[][] image = layers[0].clone();
+
+        for (int layerNo = 1; layerNo < layers.length; layerNo++)
+        {
+            for (int y = 0; y < height; y++)
+            {
+                for (int x = 0; x < width; x++)
+                {
+                    if (image[y][x] == 2 && layers[layerNo][y][x] != 2) { image[y][x] = layers[layerNo][y][x]; }
+                }
+            }
+        }
+
+        return image;
+    }
+
+    private void outputImage(int[][] image)
+    {
+        for (int y = 0; y < height; y++)
+        {
+            for (int x = 0; x < width; x++) { System.out.print(image[y][x] == 1 ? '#' : ' '); }
+            System.out.println();
         }
     }
 }
