@@ -5,8 +5,7 @@ import advent.AdventOfCode;
 import java.io.File;
 import java.util.Arrays;
 import java.util.Scanner;
-import java.util.concurrent.BlockingQueue;
-import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.SynchronousQueue;
 
 public class DaySeven extends AdventOfCode
 {
@@ -34,7 +33,17 @@ public class DaySeven extends AdventOfCode
 
     int partOne() throws Exception
     {
-        generatePhaseSettingPermutations(new int[]{}, new int[] {0,1,2,3,4});
+        return findMaxThrusterSignal(new int[] {0,1,2,3,4});
+    }
+
+    int partTwo() throws Exception
+    {
+        return findMaxThrusterSignal(new int[] {5,6,7,8,9});
+    }
+
+    int findMaxThrusterSignal(int[] phaseValues) throws Exception
+    {
+        generatePhaseSettingPermutations(new int[]{}, phaseValues);
         int maxThrusterSignal = 0;
 
         for (int[] phaseSetting: phaseSettingPermutations)
@@ -46,28 +55,49 @@ public class DaySeven extends AdventOfCode
         return maxThrusterSignal;
     }
 
-    int partTwo()
-    {
-        generatePhaseSettingPermutations(new int[]{}, new int[] {5,6,7,8,9});
-        return 0;
-    }
-
     int tryPhaseSetting(int[] phaseSetting) throws Exception
     {
-        BlockingQueue<Integer> ampInput, ampOutput = null;
-        IntCodeComputer amp;
+        final SynchronousQueue<Integer> ampInput1, ampInput2, ampInput3, ampInput4, ampInput5;
+        final SynchronousQueue<Integer> ampOutput1, ampOutput2, ampOutput3, ampOutput4, ampOutput5;
+        final IntCodeComputer amp1, amp2, amp3, amp4, amp5;
 
-        for (int index = 0; index < 5; index++)
-        {
-            ampInput = new LinkedBlockingQueue<>();
-            ampInput.add(phaseSetting[index]);
-            ampInput.add(ampOutput == null ? 0 : ampOutput.remove());
-            ampOutput = new LinkedBlockingQueue<>();
-            amp = new IntCodeComputer("Amp" + (index+1), program.clone());
-            try { amp.runProgram(ampInput, ampOutput); } catch (Exception ex) { ex.printStackTrace(); }
-        }
+        ampInput1 = new SynchronousQueue<>();
+        ampOutput1 = new SynchronousQueue<>();
+        amp1 = new IntCodeComputer("Amp1", program.clone());
 
-        return ampOutput.take();
+        ampInput2 = ampOutput1;
+        ampOutput2 = new SynchronousQueue<>();
+        amp2 = new IntCodeComputer("Amp2", program.clone());
+
+        ampInput3 = ampOutput2;
+        ampOutput3 = new SynchronousQueue<>();
+        amp3 = new IntCodeComputer("Amp3", program.clone());
+
+        ampInput4 = ampOutput3;
+        ampOutput4 = new SynchronousQueue<>();
+        amp4 = new IntCodeComputer("Amp4", program.clone());
+
+        ampInput5 = ampOutput4;
+        ampOutput5 = ampInput1;
+        amp5 = new IntCodeComputer("Amp5", program.clone());
+
+        new Thread(() -> { try { amp1.runProgram(ampInput1, ampOutput1); } catch(Exception ex) { ex.printStackTrace();} }).start();
+        new Thread(() -> { try { amp2.runProgram(ampInput2, ampOutput2); } catch(Exception ex) { ex.printStackTrace();}  }).start();
+        new Thread(() -> { try { amp3.runProgram(ampInput3, ampOutput3); } catch(Exception ex) { ex.printStackTrace();}  }).start();
+        new Thread(() -> { try { amp4.runProgram(ampInput4, ampOutput4); } catch(Exception ex) { ex.printStackTrace();}  }).start();
+        new Thread(() -> { try { amp5.runProgram(ampInput5, ampOutput5); } catch(Exception ex) { ex.printStackTrace();}  }).start();
+
+        ampInput1.put(phaseSetting[0]);
+        ampInput2.put(phaseSetting[1]);
+        ampInput3.put(phaseSetting[2]);
+        ampInput4.put(phaseSetting[3]);
+        ampInput5.put(phaseSetting[4]);
+
+        ampInput1.put(0);
+
+        Thread.sleep(10);
+
+        return ampOutput5.take();
     }
 
     private void init()
