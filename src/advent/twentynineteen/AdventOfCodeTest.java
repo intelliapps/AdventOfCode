@@ -156,6 +156,11 @@ class AdventOfCodeTest
         assertEquals("[1125899906842624]", Arrays.toString(new DayNine("104,1125899906842624,99", ",").test()));
     }
 
+    @Test
+    void testDayElevenPartOne() throws Exception
+    {
+        assertEquals(6, new DayEleven("3,43,4,45,4,44,3,43,4,44,4,44,3,43,4,45,4,44,3,43,4,45,4,44,3,43,4,44,4,45,3,43,4,45,4,44,3,43,4,45,4,44,99,0,0,1", ",").partOneTest());
+    }
 
     /*
     @Test
