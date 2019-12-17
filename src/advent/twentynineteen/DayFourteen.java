@@ -15,7 +15,7 @@ public class DayFourteen extends AdventOfCode
         DayFourteen dayFourteen1 = new DayFourteen(new File("input/2019/DayFourteen.txt"));
         System.out.println("Day Fourteen - part 1: " + dayFourteen1.partOne()); // 397771
         DayFourteen dayFourteen2 = new DayFourteen(new File("input/2019/DayFourteen.txt"));
-        System.out.println("Day Fourteen - part 2: " + dayFourteen2.partTwo());
+        System.out.println("Day Fourteen - part 2: " + dayFourteen2.partTwo()); // 3126714
     }
 
     private Map<String,Chemical> chemicals;
@@ -47,8 +47,7 @@ public class DayFourteen extends AdventOfCode
     long partTwo()
     {
         long availableOre = Long.parseLong("1000000000000");
-        long numFuel = 0;
-        long oreConsumed = 0;
+        long numFuel = 0, oreConsumed = 0;
         double adjustment = 500000;
 
         do
@@ -57,8 +56,8 @@ public class DayFourteen extends AdventOfCode
             numFuel += oreConsumed < availableOre ? Math.round(adjustment) : -Math.round(adjustment);
             chemicals.get("FUEL").produce(numFuel);
             oreConsumed = chemicals.get("ORE").getNumConsumed();
-            System.out.println("Num fuel: " + numFuel + ", Ore consumed = " + oreConsumed + ", Adjustment:" + adjustment);
             if (oreConsumed > availableOre) { adjustment = adjustment / 2; }
+            System.out.println("Num fuel: " + numFuel + ", Ore consumed = " + oreConsumed + ", Adjustment:" + adjustment);
             if (Math.round(adjustment) < 1) { break; }
         }
         while (oreConsumed != availableOre);
