@@ -28,6 +28,9 @@ public class Point3D
     public int getPx() { return px; }
     public int getPy() { return py; }
     public int getPz() { return pz; }
+    public int getVx() { return vx; }
+    public int getVy() { return vy; }
+    public int getVz() { return vz; }
 
     /**
      * The total energy for a single moon is its potential energy multiplied by its kinetic energy.
