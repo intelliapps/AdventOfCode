@@ -11,6 +11,7 @@ public class IntCodeComputerDayNine
     private int instructionPointer;
     private int relativeBase = 0;
     private boolean debug = false;
+    private boolean waitingForInput = false;
 
     IntCodeComputerDayNine(long[] program)
     {
@@ -26,6 +27,11 @@ public class IntCodeComputerDayNine
     long runProgram() throws Exception
     {
         return runProgram(new LinkedBlockingQueue<>(), new LinkedBlockingQueue<>());
+    }
+
+    boolean isWaitingForInput()
+    {
+        return waitingForInput;
     }
 
     long runProgram(BlockingQueue<Long> programInputs, BlockingQueue<Long> programOutputs) throws Exception
@@ -49,7 +55,10 @@ public class IntCodeComputerDayNine
                     break;
                 case 3:
                     if (debug) System.out.println(name + ": trying to take an input...");
-                    instructionPointer = execSaveInstruction(programInputs.take());
+                    waitingForInput = true;
+                    long input = programInputs.take();
+                    waitingForInput = false;
+                    instructionPointer = execSaveInstruction(input);
                     break;
                 case 4:
                     instructionPointer = execOutputInstruction(programOutputs);
