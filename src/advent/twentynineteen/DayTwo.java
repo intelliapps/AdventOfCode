@@ -29,6 +29,7 @@ public class DayTwo extends AdventOfCode
 
     long partOneTest() throws Exception
     {
+        init();
         IntCodeComputer intCodeComputer = new IntCodeComputer(program);
         return intCodeComputer.runProgram();
     }
@@ -61,9 +62,14 @@ public class DayTwo extends AdventOfCode
 
     private void init(int noun, int verb)
     {
-        program = new int[inputs.length];
-        for (int index = 0; index < inputs.length; index++) { program[index] = Integer.parseInt(inputs[index]); }
+        init();
         program[1] = noun;
         program[2] = verb;
+    }
+
+    private void init()
+    {
+        program = new int[inputs.length];
+        for (int index = 0; index < inputs.length; index++) { program[index] = Integer.parseInt(inputs[index]); }
     }
 }
