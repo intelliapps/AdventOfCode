@@ -13,40 +13,58 @@ public class DayFourteen extends AdventOfCode
     public static void main(String[] args) throws Exception
     {
         DayFourteen dayFourteen1 = new DayFourteen(new File("input/2019/DayFourteen.txt"));
-        System.out.println("Day Fourteen - part 1: " + dayFourteen1.partOne());
+        System.out.println("Day Fourteen - part 1: " + dayFourteen1.partOne()); // 397771
         DayFourteen dayFourteen2 = new DayFourteen(new File("input/2019/DayFourteen.txt"));
         System.out.println("Day Fourteen - part 2: " + dayFourteen2.partTwo());
     }
 
+    private Map<String,Chemical> chemicals;
+    private boolean debug = false;
+
     private DayFourteen(File inputFile) throws Exception
     {
         super(inputFile);
-        init();
     }
 
     DayFourteen(String inputText, String separator)
     {
         super(inputText, separator);
-        init();
     }
 
     private void init()
     {
+        chemicals = new HashMap<>();
         for (String inputLine: inputs) { new Reaction(inputLine); }
     }
 
-    int partOne()
+    long partOne()
     {
-        chemicals.get("FUEL").produce();
+        init();
+        chemicals.get("FUEL").produce(1);
         return chemicals.get("ORE").getNumConsumed();
     }
 
-    int partTwo()
+    long partTwo()
     {
-        return 0;
-    }
+        long availableOre = Long.parseLong("1000000000000");
+        long numFuel = 0;
+        long oreConsumed = 0;
+        double adjustment = 500000;
 
-    private Map<String,Chemical> chemicals = new HashMap<>();
+        do
+        {
+            init();
+            numFuel += oreConsumed < availableOre ? Math.round(adjustment) : -Math.round(adjustment);
+            chemicals.get("FUEL").produce(numFuel);
+            oreConsumed = chemicals.get("ORE").getNumConsumed();
+            System.out.println("Num fuel: " + numFuel + ", Ore consumed = " + oreConsumed + ", Adjustment:" + adjustment);
+            if (oreConsumed > availableOre) { adjustment = adjustment / 2; }
+            if (Math.round(adjustment) < 1) { break; }
+        }
+        while (oreConsumed != availableOre);
+
+        return numFuel-1;
+    }
 
     private class Chemical
     {
@@ -55,52 +73,57 @@ public class DayFourteen extends AdventOfCode
         Chemical (String name) { this.name = name; }
         void isProducedBy(Reaction reaction) { producedBy.add(reaction); }
         List<Reaction> isProducedBy() { return producedBy; }
-        int numProduced = 0;
-        int numConsumed = 0;
+        long numProduced = 0;
+        long numConsumed = 0;
 
-        private int getNumAvailable()
+        long getNumAvailable()
         {
             return numProduced - numConsumed;
         }
-        int getNumConsumed()
+        long getNumConsumed()
         {
             return numConsumed;
         }
 
-        void produce()
+       void produce(long numRequired)
         {
+            if (numRequired == 0) { return; }
             if (name.equals("ORE")) { throw new RuntimeException("Cannot produce ORE"); }
             if (isProducedBy().size() > 1) { throw new RuntimeException("Chemical produced by multiple reactions"); }
 
-            System.out.println("Producing " + name);
-
             Reaction reaction = isProducedBy().get(0);
             Chemical inputChemical;
-            int numRequired;
+            long numInputRequired, numInputToProduce;
+
+            long numToProduce = numRequired;
+            while (numToProduce % reaction.outputAmount > 0) numToProduce++;
+            long numReactions = numToProduce / reaction.outputAmount;
+
+            if (debug) System.out.println("Producing " + numToProduce + " " + name);
 
             for (int index = 0; index < reaction.inputs.length; index++)
             {
                 inputChemical = reaction.inputs[index];
-                numRequired = reaction.inputAmounts[index];
-                System.out.println("Require " + numRequired + " " + inputChemical.name);
+                numInputRequired = reaction.inputAmounts[index] * numReactions;
+                if (debug) System.out.println("Require " + numInputRequired + " " + inputChemical.name);
 
                 if (!inputChemical.name.equals("ORE"))
                 {
-                    while (inputChemical.getNumAvailable() < numRequired)
-                    {
-                        inputChemical.produce();
-                    }
+                    numInputToProduce = numInputRequired > inputChemical.getNumAvailable()
+                            ? numInputRequired - inputChemical.getNumAvailable() : 0;
+                    inputChemical.produce(numInputToProduce);
                 }
-                inputChemical.consume(numRequired);
+
+                inputChemical.consume(numInputRequired);
             }
 
-            System.out.println("Produced " + reaction.outputAmount + " " + name);
-            numProduced += reaction.outputAmount;
+            if (debug) System.out.println("Produced " + numToProduce + " " + name);
+            numProduced += numToProduce;
         }
 
-        void consume(int numRequired)
+        void consume(long numRequired)
         {
-            System.out.println("Consumed " + numRequired + " " + name);
+            if (debug) System.out.println("Consumed " + numRequired + " " + name);
             numConsumed += numRequired;
         }
     }
